@@ -74,4 +74,47 @@ class UtilisateurTest {
         boolean resultat = email.matches("^[\\w-.]+@[\\w-]+\\.[a-zA-Z]{2,}$");
         assertEquals(valide, resultat);
     }
+    
+    @Test
+    void testSoldeGeneralPositif() throws Exception {
+        Utilisateur.ajouter(new Utilisateur(1, "Alice", 25, "alice@gmail.com", "699123456", "Yaoundé", 5000));
+        Utilisateur.ajouter(new Utilisateur(2, "Bob", 30, "bob@gmail.com", "678123456", "Douala", 7000));
+        Utilisateur.ajouter(new Utilisateur(3, "Charlie", 28, "charlie@gmail.com", "677123456", "Bafoussam", -2000));
+
+        double soldeGeneral = Utilisateur.analyseSoldeGeneral();
+        assertEquals(10000, soldeGeneral, 0.001);
+    }
+    
+    @Test
+    void testSoldeGeneralNegatif() throws Exception {
+        Utilisateur.ajouter(new Utilisateur(1, "Alice", 25, "alice@gmail.com", "699123456", "Yaoundé", -5000));
+        Utilisateur.ajouter(new Utilisateur(2, "Bob", 30, "bob@gmail.com", "678123456", "Douala", -3000));
+
+        assertThrows(NegativeGeneralBalanceException.class, Utilisateur::analyseSoldeGeneral);
+    }
+    
+    @Test
+    void testSoldeGeneralVide() throws Exception {
+        double solde = Utilisateur.analyseSoldeGeneral();
+        assertEquals(0, solde, 0.001);
+    }
+    
+    @Test
+    void testUtilisateurPlusRiche() throws Exception {
+        Utilisateur.ajouter(new Utilisateur(1, "Alice", 25, "alice@gmail.com", "699123456", "Yaoundé", 5000));
+        Utilisateur.ajouter(new Utilisateur(2, "Bob", 30, "bob@gmail.com", "678123456", "Douala", 7000));
+        Utilisateur.ajouter(new Utilisateur(3, "Charlie", 28, "charlie@gmail.com", "677123456", "Bafoussam", 6000));
+
+        Utilisateur riche = Utilisateur.utilisateurPlusRiche();
+        assertNotNull(riche);
+        assertEquals("Bob", riche.getNom());
+        assertEquals(7000, riche.getSoldePersonnel(), 0.001);
+    }
+
+    @Test
+    void testUtilisateurPlusRicheListeVide() {
+        Utilisateur riche = Utilisateur.utilisateurPlusRiche();
+        assertNull(riche);
+    }
+
 }
