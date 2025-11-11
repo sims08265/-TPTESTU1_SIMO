@@ -1,6 +1,7 @@
 package com.stjean.operationalpha;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.regex.Pattern;
 
 public class Utilisateur {
@@ -43,7 +44,7 @@ public class Utilisateur {
     public static void ajouter(Utilisateur user) throws EmailInvalidException {
         
         users.add(user);
-        System.out.println("✅ Utilisateur ajouté : " + user.getNom());
+        System.out.println(" Utilisateur ajouté : " + user.getNom());
     }
 
     public static void supprimer(int id) throws SuppressionInvalidException {
@@ -55,17 +56,17 @@ public class Utilisateur {
             }
         }
         if (u == null) {
-            throw new SuppressionInvalidException("❌ Utilisateur avec ID " + id + " introuvable.");
+            throw new SuppressionInvalidException(" Utilisateur avec ID " + id + " introuvable.");
         }
         users.remove(u);
-        System.out.println("🗑️ Utilisateur supprimé : " + u.getNom());
+        System.out.println(" Utilisateur supprimé : " + u.getNom());
     }
 
     public static void lister() {
         if (users.isEmpty()) {
             System.out.println("Aucun utilisateur enregistré.");
         } else {
-            System.out.println("📋 Liste des utilisateurs :");
+            System.out.println(" Liste des utilisateurs :");
             for (Utilisateur u : users) {
                 System.out.println(u);
             }
@@ -75,16 +76,34 @@ public class Utilisateur {
     public static void afficher(int id) {
         for (Utilisateur u : users) {
             if (u.getId() == id) {
-                System.out.println("👤 Détails utilisateur : " + u);
+                System.out.println(" Détails utilisateur : " + u);
                 return;
             }
         }
-        System.out.println("⚠️ Aucun utilisateur trouvé avec l'ID " + id);
+        System.out.println(" Aucun utilisateur trouvé avec l'ID " + id);
     }
+    
+    
 
     private static boolean validerEmail(String email) {
         String regex = "^[\\w-.]+@[\\w-]+\\.[a-zA-Z]{2,}$";
         return Pattern.matches(regex, email);
+    }
+    
+    public static double analyseSoldeGeneral() throws NegativeGeneralBalanceException {
+        double total = users.stream()
+                .mapToDouble(Utilisateur::getSoldePersonnel)
+                .sum();
+        if (total < 0) {
+            throw new NegativeGeneralBalanceException(" Solde général négatif : " + total);
+        }
+        return total;
+    }
+    
+    public static Utilisateur utilisateurPlusRiche() {
+        return users.stream()
+                .max(Comparator.comparingDouble(Utilisateur::getSoldePersonnel))
+                .orElse(null);
     }
 
     @Override
