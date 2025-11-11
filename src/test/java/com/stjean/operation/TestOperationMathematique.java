@@ -73,5 +73,21 @@ class TestOperationMathematique {
     void testTrier(int[] input, int[] expected) {
         assertArrayEquals(expected, op.trier(input));
     }
+    
+    
+    static Stream<org.junit.jupiter.params.provider.Arguments> fournirTableaux1() {
+        return Stream.of(
+            org.junit.jupiter.params.provider.Arguments.of(new double[]{1, 2, 3, 4, 5}, 5),
+            org.junit.jupiter.params.provider.Arguments.of(new double[]{10, 7, 9}, 10),
+            org.junit.jupiter.params.provider.Arguments.of(new double[]{-3, -7, -1, -5}, -1),
+            org.junit.jupiter.params.provider.Arguments.of(new double[]{42}, 42)
+        );
+    }
 
+
+    @ParameterizedTest
+    @MethodSource("fournirTableaux1")
+    void testTrouverMax(double[] input, double attendu) {
+        assertEquals(attendu, op.maxNumba(input));
+    }
 }

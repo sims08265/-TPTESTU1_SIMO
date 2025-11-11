@@ -20,4 +20,8 @@ public static boolean  estPositif(int nombre) {
 	 Arrays.sort(listes);
 	 return listes;
  }
+ 
+ public static double maxNumba(double[] valeurs) {
+	 return Arrays.stream(valeurs).max().getAsDouble();
+ }
 }
