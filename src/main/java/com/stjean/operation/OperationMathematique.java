@@ -8,9 +8,9 @@ public static boolean  estPositif(int nombre) {
 	 return nombre>0;
  }
  
- public static long factoriel(long a) throws FactorielInvalidException {
+ public static long factoriel(long a) throws IllegalParamISIException {
 		if(a<0)
-			throw new FactorielInvalidException("il faut un nombre positif");
+			throw new IllegalParamISIException("il faut un nombre strictement positif");
 		if(a==0 || a==1) 
 			return 1;
 		return a*factoriel(a-1);

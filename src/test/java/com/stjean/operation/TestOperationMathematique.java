@@ -14,7 +14,7 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 import org.junit.jupiter.params.provider.ValueSource;
 
-import com.sun.org.apache.xml.internal.serializer.utils.Utils;
+
 
 class TestOperationMathematique {
 
@@ -46,7 +46,7 @@ class TestOperationMathematique {
 	}
 
 	@Test
-	void testFactoriel() throws FactorielInvalidException {
+	void testFactoriel() throws IllegalParamISIException {
 		System.out.println("Je teste la methode factoriel.");
 		
         assertEquals(1, op.factoriel(1), "Factoriel de 1 doit être 1");
@@ -55,7 +55,7 @@ class TestOperationMathematique {
         assertEquals(120, op.factoriel(5), "Factoriel de 5 doit être 120");
        
         
-		assertThrows(FactorielInvalidException.class, ()->op.factoriel(-1));
+		assertThrows(IllegalParamISIException.class, ()->op.factoriel(-3));
 		
 	}
 	
