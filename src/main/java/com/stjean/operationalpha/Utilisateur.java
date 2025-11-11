@@ -40,19 +40,22 @@ public class Utilisateur {
     public void setVille(String ville) { this.ville = ville; }
     public void setSoldePersonnel(double soldePersonnel) { this.soldePersonnel = soldePersonnel; }
 
-    public static void ajouter(Utilisateur user) {
+    public static void ajouter(Utilisateur user) throws EmailInvalidException {
         
         users.add(user);
         System.out.println("✅ Utilisateur ajouté : " + user.getNom());
     }
 
-    public static void supprimer(int id) {
+    public static void supprimer(int id) throws SuppressionInvalidException {
         Utilisateur u = null;
         for (Utilisateur user : users) {
             if (user.getId() == id) {
                 u = user;
                 break;
             }
+        }
+        if (u == null) {
+            throw new SuppressionInvalidException("❌ Utilisateur avec ID " + id + " introuvable.");
         }
         users.remove(u);
         System.out.println("🗑️ Utilisateur supprimé : " + u.getNom());
@@ -79,5 +82,14 @@ public class Utilisateur {
         System.out.println("⚠️ Aucun utilisateur trouvé avec l'ID " + id);
     }
 
-   
+    private static boolean validerEmail(String email) {
+        String regex = "^[\\w-.]+@[\\w-]+\\.[a-zA-Z]{2,}$";
+        return Pattern.matches(regex, email);
+    }
+
+    @Override
+    public String toString() {
+        return String.format("ID: %d | Nom: %s | Âge: %d | Email: %s | Téléphone: %s | Ville: %s | Solde: %.2f",
+                id, nom, age, email, telephone, ville, soldePersonnel);
+    }
 }
