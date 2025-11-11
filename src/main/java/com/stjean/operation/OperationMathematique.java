@@ -1,5 +1,7 @@
 package com.stjean.operation;
 
+import java.util.Arrays;
+
 public class OperationMathematique {
 
 public static boolean  estPositif(int nombre) {
@@ -13,4 +15,9 @@ public static boolean  estPositif(int nombre) {
 			return 1;
 		return a*factoriel(a-1);
 	}
+ 
+ public static int[] trier(int[] listes) {
+	 Arrays.sort(listes);
+	 return listes;
+ }
 }

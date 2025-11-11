@@ -2,11 +2,19 @@ package com.stjean.operation;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+import java.util.Arrays;
+import java.util.stream.Stream;
+
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.MethodSource;
+import org.junit.jupiter.params.provider.ValueSource;
+
+import com.sun.org.apache.xml.internal.serializer.utils.Utils;
 
 class TestOperationMathematique {
 
@@ -50,5 +58,20 @@ class TestOperationMathematique {
 		assertThrows(FactorielInvalidException.class, ()->op.factoriel(-1));
 		
 	}
+	
+	static Stream<org.junit.jupiter.params.provider.Arguments> fournirTableaux() {
+        return Stream.of(
+            org.junit.jupiter.params.provider.Arguments.of(new int[]{5, 2, 1}, new int[]{1, 2, 5}),
+            org.junit.jupiter.params.provider.Arguments.of(new int[]{3, 3, 1}, new int[]{1, 3, 3}),
+            org.junit.jupiter.params.provider.Arguments.of(new int[]{9, 7, 8}, new int[]{7, 8, 9})
+        );
+    }
+
+
+    @ParameterizedTest
+    @MethodSource("fournirTableaux")
+    void testTrier(int[] input, int[] expected) {
+        assertArrayEquals(expected, op.trier(input));
+    }
 
 }
